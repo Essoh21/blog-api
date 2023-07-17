@@ -21,7 +21,8 @@ async function main() {
     throw new Error(e);
   }
 }
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(appRouter);
 app.listen(process.env.PORT, () => {
   console.log("api running on port", process.env.PORT);
