@@ -35,7 +35,7 @@ exports.postCreateAuthor = [
     if (!errorsFromvalidation.isEmpty()) {
       return res.status(400).json({
         data: inputedData,
-        errors: errorsFromvalidation,
+        errors: errorsFromvalidation.errors,
       });
     }
 
@@ -49,6 +49,7 @@ exports.postCreateAuthor = [
     await author.save();
     return res.status(200).json({
       status: " author saved",
+      author: author,
     });
   },
 ];
@@ -63,7 +64,7 @@ exports.getAuthor = asyncHandler(async (req, res, next) => {
   ).exec();
   res.status(200).json(author);
 });
-
+//update author
 exports.getAuthorUpdate = asyncHandler(async (req, res, next) => {
   const authorId = req.params.authorid;
   const author = await AuthorModel.findById(
@@ -85,7 +86,7 @@ exports.putAuthorUpdate = [
     const errorsFromvalidation = validationResult(req);
     const validData = matchedData(req);
     if (!errorsFromvalidation.isEmpty()) {
-      return res.status(400).json({ errors: errorsFromvalidation });
+      return res.status(400).json({ errors: errorsFromvalidation.errors });
     }
     // update data when data is valid
     const newAuthor = { ...validData, _id: authorId };
@@ -103,12 +104,12 @@ exports.deleteAuthor = asyncHandler(async (req, res, next) => {
   const authorPosts = allPosts.filter(
     (post) => post.author.id + "" === authorId + ""
   );
-  const authorHavePosts = authorPosts.length < 1;
+  const authorHavePosts = authorPosts.length > 0;
   if (authorHavePosts) {
     return res.status(403).json({ authorPosts: authorPosts });
   }
 
   // if author doesn't have posts then you can poced to delete author
   await AuthorModel.findByIdAndDelete(authorId);
-  return;
+  return res.status(200).json({ result: "author deleted" });
 });

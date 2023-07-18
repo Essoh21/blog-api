@@ -19,7 +19,7 @@ exports.postUser = [
       };
       return res
         .status(400)
-        .json({ erro: errorsFromValidation, data: inputedData });
+        .json({ erro: errorsFromValidation.errors, data: inputedData });
     }
     // save valid data to db
     const validData = matchedData(req);
@@ -28,13 +28,15 @@ exports.postUser = [
       email: validData.email,
     });
     await user.save();
-    return res.status(200);
+    return res.status(200).json({
+      user,
+    });
   }),
 ];
 
 // read user
 exports.getUser = asyncHandler(async (req, res, next) => {
-  const userId = req.params.userId;
+  const userId = req.params.userid;
   // collect user Info from database
   const user = await UserModel.findById(userId).exec();
   if (!user) {
@@ -78,19 +80,19 @@ exports.putUserUpdate = [
       _id: userId,
     });
     await UserModel.findByIdAndUpdate(userId, user);
-    return res.status(200);
+    return res.status(200).json({ user });
   }),
 ];
 
 // delete user
 exports.deleteUser = asyncHandler(async (req, res, next) => {
-  const userId = req.params.userId;
+  const userId = req.params.userid;
   // don't delete user if he has some comments
   const allComments = await CommentModel.find({}).populate("user").exec();
   const userComments = allComments.filter(
-    (comment) => comment.user.id + "" === userId + ""
+    (comment) => comment.user._id + "" === userId + ""
   );
-  const userhasComments = userComments.length < 1;
+  const userhasComments = userComments.length > 0;
   if (userhasComments) {
     return res.status(403).json({
       userComments: userComments,
@@ -99,5 +101,5 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 
   // delete user if he does't have any comment
   await UserModel.findByIdAndDelete(userId);
-  res.status(200);
+  return res.status(200).json({ result: "successful deletion" });
 });

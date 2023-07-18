@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 const { DateTime } = require("luxon");
 
 const commentSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: "user", required: true },
+  user: { type: String, required: true },
+  email: { type: String, required: true },
   comment: { type: String, required: true, minLength: 2 },
   dateTime: { type: Date, required: true, default: Date.now() },
 });
