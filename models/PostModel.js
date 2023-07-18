@@ -6,8 +6,8 @@ const postSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   dateTime: { type: Date, required: true, default: Date.now() },
-  author: { type: Schema.Types.ObjectId, ref: "Author" },
-  comments: { type: Schema.Types.ObjectId, ref: "Commnent" },
+  author: { type: Schema.Types.ObjectId, ref: "author" },
+  comments: { type: Schema.Types.ObjectId, ref: "commnent" },
 });
 
 //virtuals

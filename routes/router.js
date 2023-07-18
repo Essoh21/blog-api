@@ -3,10 +3,8 @@ const router = express.Router();
 const authorController = require("../controllers/authorController");
 const userController = require("../controllers/userController");
 const commentController = require("../controllers/commentController");
+const postController = require("../controllers/postController");
 
-router.get("/", (req, res) => {
-  res.status(200).json({ name: "api" });
-});
 // author
 router.post("/author", authorController.postCreateAuthor);
 module.exports = router;
@@ -26,3 +24,9 @@ router.get("/comments/:commentid", commentController.getComment);
 router.get("/comments/:commentid/update", commentController.getCommentUpdate);
 router.put("/comments/:commentid/update", commentController.putCommentUpdate);
 router.delete("/comments/:commentid", commentController.deleteComment);
+// Post
+router.post("/authors/:authorid/post", postController.postPost);
+router.get("/posts/:postid", postController.getPost);
+router.get("/posts/:postid/update", postController.getPostUpdate);
+router.put("/posts/:postid/update", postController.putPostUpdate);
+router.delete("/posts/:postid/delete", postController.deletePost);
