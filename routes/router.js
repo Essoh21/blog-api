@@ -4,6 +4,7 @@ const authorController = require("../controllers/authorController");
 const userController = require("../controllers/userController");
 const commentController = require("../controllers/commentController");
 const postController = require("../controllers/postController");
+const adminController = require("../controllers/adminController");
 
 // author
 router.post("/author", authorController.postCreateAuthor);
@@ -30,3 +31,6 @@ router.get("/posts/:postid", postController.getPost);
 router.get("/posts/:postid/update", postController.getPostUpdate);
 router.put("/posts/:postid/update", postController.putPostUpdate);
 router.delete("/posts/:postid/delete", postController.deletePost);
+// admin user
+router.post("/admin", adminController.postAdminUser);
+router.post("/login", adminController.postLogin);
