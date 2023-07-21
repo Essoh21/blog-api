@@ -4,6 +4,7 @@ const app = express();
 const appRouter = require("./routes/router");
 const passport = require("passport");
 const passportConfig = require("./helpers/passporConfig");
+const cors = require("cors");
 
 passportConfig(passport);
 
@@ -25,6 +26,7 @@ async function main() {
     throw new Error(e);
   }
 }
+app.use(cors({ origin: process.env.LOCAL_HOST }));
 app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
