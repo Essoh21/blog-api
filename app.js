@@ -2,6 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const appRouter = require("./routes/router");
+const passport = require("passport");
+const passportConfig = require("./helpers/passporConfig");
+
+passportConfig(passport);
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -21,6 +25,7 @@ async function main() {
     throw new Error(e);
   }
 }
+app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(appRouter);

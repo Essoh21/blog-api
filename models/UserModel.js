@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const userSchema = new Schema({
   user: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  refreshToken: { type: String, default: "", required: true },
   adminTrials: { type: Number, default: 0, required: true },
   isAuthenticatedAdmin: { type: Boolean, required: true, default: false },
 });

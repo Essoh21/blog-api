@@ -34,3 +34,6 @@ router.delete("/posts/:postid/delete", postController.deletePost);
 // admin user
 router.post("/admin", adminController.postAdminUser);
 router.post("/login", adminController.postLogin);
+router.get("/admin/page", adminController.getAdminPage);
+router.post("/admin/continue", adminController.postContinueSession);
+router.post("/admin/logout", adminController.postAdminLogout);
