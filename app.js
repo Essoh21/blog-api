@@ -5,6 +5,14 @@ const appRouter = require("./routes/router");
 const passport = require("passport");
 const passportConfig = require("./helpers/passporConfig");
 const cors = require("cors");
+//for production
+const compression = require("compression");
+const helmet = require("helmet");
+const RateLimit = require("express-rate-limit");
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 20,
+});
 
 passportConfig(passport);
 
@@ -26,10 +34,13 @@ async function main() {
     throw new Error(e);
   }
 }
+app.use(helmet());
 app.use(cors({ origin: process.env.LOCAL_HOST }));
 app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(compression());
+app.use(limiter);
 app.use(appRouter);
 app.listen(process.env.PORT, () => {
   console.log("api running on port", process.env.PORT);

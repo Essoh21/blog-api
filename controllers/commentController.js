@@ -9,9 +9,9 @@ exports.postComment = [
   body("user")
     .trim()
     .notEmpty()
-    .withMessage("empty comment not allowed")
-    .isLength({ min: 4, max: 250 })
-    .withMessage("comment must be at least 4 characters and at most 6 lines ")
+    .withMessage("empty name not allowed")
+    .isLength({ min: 2, max: 20 })
+    .withMessage("name must be at least 2 characters and at most 20 ")
     .escape(),
   body("email")
     .trim()
@@ -24,8 +24,7 @@ exports.postComment = [
     .notEmpty()
     .withMessage("empty comments not allowed ")
     .isLength({ min: 3 })
-    .withMessage("comment must have at least 3 characters")
-    .escape(),
+    .withMessage("comment must have at least 3 characters"),
   asyncHandler(async (req, res, next) => {
     const errorFromValidation = validationResult(req);
     const inputedData = {
@@ -37,7 +36,7 @@ exports.postComment = [
     if (dataFailedvalidation) {
       return res
         .status(400)
-        .json({ errors: errorFromValidation, data: inputedData });
+        .json({ errors: errorFromValidation.errors, data: inputedData });
     }
     // if valid Data
     const validData = matchedData(req);
@@ -48,7 +47,7 @@ exports.postComment = [
     });
 
     await comment.save();
-    return res.status(200).json({ comment });
+    return res.status(200).json({ message: "ok", comment: comment._id });
   }),
 ];
 
@@ -63,6 +62,14 @@ exports.getComment = async (req, res, next) => {
     res.status(200).json({ comment });
   } catch (e) {
     res.status(400).json(e);
+  }
+};
+exports.getAllComments = async (req, res, next) => {
+  try {
+    const comments = await CommentModel.find({}).exec();
+    return res.status(200).json({ comments: comments });
+  } catch (e) {
+    return res.status(400).json(e);
   }
 };
 

@@ -21,6 +21,7 @@ router.put("/users/:userid/update", userController.putUserUpdate);
 router.delete("/users/:userid", userController.deleteUser);
 // comment
 router.post("/post/comment", commentController.postComment);
+router.get("/comments", commentController.getAllComments);
 router.get("/comments/:commentid", commentController.getComment);
 router.get("/comments/:commentid/update", commentController.getCommentUpdate);
 router.put("/comments/:commentid/update", commentController.putCommentUpdate);

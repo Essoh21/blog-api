@@ -78,8 +78,7 @@ exports.createPseudoStringValidationChain =
       .isLength({ max: 15 })
       .withMessage(`${fieldname} must have at most 15 characters.`)
       .custom((inputedPseudo) => isNaN(inputedPseudo))
-      .withMessage("number pseudo not allowed. Please try another pseudo. ")
-      .escape();
+      .withMessage("number pseudo not allowed. Please try another pseudo. ");
   };
 exports.createPasswordValidationChain =
   (reqDataObject) => (fieldname, errorText) => {
@@ -106,8 +105,7 @@ exports.createStringValidationChain = (fieldname, errorText) => {
     .notEmpty()
     .withMessage(`empty ${fieldname} not allowed`)
     .isLength({ min: 2, max: 30 })
-    .withMessage(`${fieldname} must have at least 2 characters`)
-    .escape();
+    .withMessage(`${fieldname} must have at least 2 characters`);
 };
 
 exports.createEmailValidationChain = (fieldName, errorText) => {
@@ -134,6 +132,5 @@ exports.createMessageValidationChain = (fieldName, errorText) => {
   return body(`${fieldName}`, `${errorText}`)
     .trim()
     .notEmpty()
-    .withMessage("empty message not allowed")
-    .escape();
+    .withMessage("empty message not allowed");
 };

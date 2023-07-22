@@ -15,7 +15,7 @@ exports.postPost = [
     .withMessage(
       "title must be at least 10 characters and at most three lines"
     ),
-  body("content").trim().notEmpty().isLength({ min: 20 }).escape(),
+  body("content").trim().notEmpty().isLength({ min: 20 }),
   async (req, res, next) => {
     const errorsFromvalidation = validationResult(req);
     const dataIsNotValid = !errorsFromvalidation.isEmpty();
@@ -52,7 +52,7 @@ exports.postPost = [
 exports.getPost = async (req, res, next) => {
   const postId = req.params.postid;
   try {
-    const post = await PostModel.findById(postId).exec();
+    const post = await PostModel.findById(postId).populate("author").exec();
     const postNotFound = !post;
     if (postNotFound) {
       return res.status(404).json({ message: "post not found" });
@@ -90,7 +90,6 @@ exports.putPostUpdate = [
       const postToUpdate = await PostModel.findById(postId)
         .populate("author")
         .exec();
-      console.log("error must be here ");
       if (!postToUpdate) {
         return res.status(404).json({ message: "post not found" });
       }
